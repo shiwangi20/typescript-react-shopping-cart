@@ -1,5 +1,8 @@
 import {useQuery} from 'react-query';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Grid from '@material-ui/core/Grid';
+import {Wrapper} from './App.styles';
+import Item from './Item/Item';
 
 export type CartItemType = {
   id: number;
@@ -28,10 +31,18 @@ const App = () => {
     return <div>"Something went wrong"</div>
   }
 
+  const handleAddTocart = (clikedItem: CartItemType) => null;
+
   return (
-    <div className="App">
-      Start
-    </div>
+    <Wrapper>
+      <Grid container spacing={3}>
+        {data?.map(item => 
+          <Grid item key={item.id} xs={12} sm={4}>
+            <Item item={item} handleAddTocart={handleAddTocart}/>
+          </Grid>
+        )}
+      </Grid>
+    </Wrapper>
   );
 }
 
