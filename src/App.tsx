@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import {Wrapper, StyledButton} from './App.styles';
 import Item from './Item/Item';
+import Cart from './Cart/Cart';
 
 export type CartItemType = {
   id: number;
@@ -40,19 +41,24 @@ const App = () => {
 
   const handleAddTocart = (clikedItem: CartItemType) => null;
 
+  const removeFromCart = (id: number) => null;
+
   const getTotalItems = (items: CartItemType[]) => 
     items.reduce((ack: number, item) => ack + item.amount, 0);
 
   return (
     <Wrapper>
+
       <Drawer anchor={'right'} open={cartOpen} onClose={() => setCartOpen(false)}>
-        Cart Items
+        <Cart cartItems={cartItems} addToCart={handleAddTocart} removeFromCart={removeFromCart} /> 
       </Drawer>
+
       <StyledButton onClick={() => setCartOpen(true)}>
         <Badge color="primary" badgeContent={getTotalItems(cartItems)} >
           <AddShoppingCartIcon/>
         </Badge>
       </StyledButton>
+
       <Grid container spacing={3}>
         {data?.map(item => 
           <Grid item key={item.id} xs={12} sm={4}>
@@ -60,6 +66,7 @@ const App = () => {
           </Grid>
         )}
       </Grid>
+
     </Wrapper>
   );
 }
