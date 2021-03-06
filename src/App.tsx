@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useQuery} from 'react-query';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Drawer from '@material-ui/core/Drawer';
@@ -8,6 +8,8 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import {Wrapper, StyledButton} from './App.styles';
 import Item from './Item/Item';
 import Cart from './Cart/Cart';
+
+const LOCAL_STORAGE_KEY = "react-shopping-cart-items";
 
 export type CartItemType = {
   id: number;
@@ -26,6 +28,17 @@ const App = () => {
 
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
+
+  useEffect(() => {
+    const storageCartItems : string | null = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if(storageCartItems){
+      setCartItems(JSON.parse(storageCartItems));
+    }
+  },[]);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cartItems));
+  },[cartItems]);
 
   const {isLoading, error, data} = useQuery<CartItemType[]>('Products', getProducts);
 
